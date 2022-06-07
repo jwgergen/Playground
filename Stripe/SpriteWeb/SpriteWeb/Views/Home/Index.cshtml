@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section styles
+    {
+    <link rel="stylesheet" href="~/less/stripe.min.css" />
+}
+
+    <div class="text-center">
+        <h2 >jim gergen</h2>
+        <h3>(281) 799-9819</h3>
+        <p>Full stack demonstration...</p>
+        <p>Knockout js demonstration...</p>
+        <p>Less demonstration...</p>
+        <p>.NET Core 6.0 ASP.NET MVC...</p>
+        <p></p>
+        <div style="font-size: 1.5em; font-weight: bold;">
+            Hover over charges and customers to see where they came from.
+        </div>
+    </div>
+
+    <div class="stripe-container">
+
+        <div class="sub-container">
+            <div class="title">Customers</div>
+            <div class="top-controls">
+                <span>Number of results: </span>
+                <input type="number" data-bind="value: customerLimit" />
+                <button class="update" data-bind="click: getCustomers"></button>
+            </div>
+            <div class="list">
+                <div class="row header">
+                    <div>Name</div>
+                    <div>id</div>
+                </div>
+                <!-- ko foreach: customers -->
+                <div class="row" data-bind="
+                    click: $root.customerClicked,
+                    attr: { selected: selected(), title: description() }">
+                    <div><span data-bind="text: name"></span></div>
+                    <div><span data-bind="text: id"></span></div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <div class="buttons">
+                <div data-bind="visible: selectedCustomer">
+                    <button data-bind="
+                        click: executeDeleteCustomer">
+                        Delete Customer
+                    </button>
+                </div>
+                <div>
+                    <button name="createCustomer" data-bind="
+                        click: createCustomerClicked">
+                        New Customer
+                    </button>
+                </div>
+            </div>
+            <div class="buttons" data-bind="visible: creatingCustomer()">
+                <div>
+                    <span>Name: </span>
+                    <div><input type="text" data-bind="value: customerName" /></div>
+                </div>
+                <div>
+                    <span>Email: </span>
+                    <div><input type="text" data-bind="value: customerEmail" /></div>
+                </div>
+                <div>
+                    <button name="executeCreateCustomer" data-bind="
+                            click: createCustomer">
+                        Create!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-container">
+            <div class="title">
+                <div data-bind="with: selectedCustomer">
+                    <span data-bind="text: name"></span>
+                    <span> </span>
+                </div>
+                Charges
+            </div>
+            <div data-bind="with: selectedCustomer">
+                <div class="list">
+                    <div class="row header">
+                        <div class="id"><span>Charge id</span></div>
+                        <div><span>Date</span></div>
+                        <div><span>Charge $</span></div>
+                        <div><span>Refund $</span></div>
+                    </div>
+                    <!-- ko foreach: charges -->
+                    <div class="row" data-bind="
+                        click: $parent.selectCharge,
+                        attr: { selected: selected(), title: description() }">
+                        <div class="id"><span data-bind="text: id"></span></div>
+                        <div class="date"><span data-bind="text: chargeDate(created())"></span></div>
+                        <div class="money"><span data-bind="text: dollarAmount(amount())"></span></div>
+                        <div class="money"><span data-bind="text: dollarAmount(amountRefunded())"></span></div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="buttons">
+                    <div>
+                        <button name="refund" data-bind="
+                        visible: selectedCharge,
+                        click: refundClicked">
+                            Refund
+                        </button>
+                    </div>
+                    <div><button name="create" data-bind="click: createClicked">New Charge</button></div>
+                </div>
+                <div class="buttons" data-bind="visible: refunding() || creating()">
+                    <span>Amount in cents: </span>
+                    <div><input type="number" data-bind="value: execAmount" /></div>
+                    <div>
+                        <button name="execute" data-bind="
+                            text: createRefundButtonLabel,
+                            click: executeCreateRefund">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-container">
+            <div class="title">Payments</div>
+            <div class="top-controls">
+                <span>Payments from: </span>
+                <input type="text" data-bind="value: fromDate, event: { change: searchDateChanged }" data-provide="datepicker" data-autoclose="true" placeholder="Select or type date" />
+                <span>  </span>
+                <span>Number of results: </span>
+                <input type="number" data-bind="value: limit" />
+                <button class="update" data-bind="click: getPayments, enable: fromDate"></button>
+            </div>
+            <div data-bind="visible: fromDate">
+                <div class="list">
+                    <div class="row header">
+                        <div class="id">Charge Id</div>
+                        <div>Charge</div>
+                        <div>Date</div>
+                        <div>Refund</div>
+                        <div>Net</div>
+                    </div>
+                    <!-- ko foreach: paidCharges -->
+                    <div class="row" data-bind="attr: { title: description() }">
+                        <div class="id"><span data-bind="text: id"></span></div>
+                        <div class="money"><span data-bind="text: dollarAmount(amountCaptured())"></span></div>
+                        <div class="date"><span data-bind="text: chargeDate(created())"></span></div>
+                        <div class="money"><span data-bind="text: dollarAmount(amountRefunded())"></span></div>
+                        <div class="money"><span data-bind="text: dollarAmount(netAmount())"></span></div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @section scripts
+    {
+    <script src="~/lib/numeral.js/numeral.min.js"></script>
+    <script src="~/lib/knockout/knockout-latest.min.js"></script>
+    <script src="~/lib/knockout.mapping/knockout.mapping.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/ViewModels.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $(function() {
+
+            var vm = new ViewModel();
+            vm.init();
+            ko.applyBindings(vm);
+        });
+    </script>
+}
