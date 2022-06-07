@@ -1,0 +1,96 @@
+﻿.stripe-container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+.stripe-container .sub-container {
+  max-width: 48%;
+  flex: 0 0 50%;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid;
+  border-color: rgba(127, 45, 45, 0.7);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 10px;
+  position: relative;
+}
+.stripe-container .sub-container .list {
+  max-height: 300px;
+  overflow-y: scroll;
+  width: 100%;
+}
+.stripe-container .sub-container .list .row {
+  display: flex;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(100, 100, 100, 0.5);
+}
+.stripe-container .sub-container .list .row div {
+  flex: 1;
+  border-right: 1px solid black;
+  padding: 0 4px;
+}
+.stripe-container .sub-container .list .row div.id {
+  flex: 1 0 35%;
+}
+.stripe-container .sub-container .list .row div.money {
+  text-align: right;
+}
+.stripe-container .sub-container .list .row div.date {
+  text-align: center;
+}
+.stripe-container .sub-container .list .row[selected="true"] {
+  background-color: rgba(127, 127, 127, 0.4);
+  border: 1px, solid, black;
+  box-shadow: rgba(0, 0, 0, 0.4) 2px 2px 4px;
+}
+.stripe-container .sub-container .list .row.header {
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+}
+.stripe-container .sub-container .title {
+  box-shadow: rgba(33, 33, 33, 0.5) 1px 1px 3px;
+  position: absolute;
+  top: -12px;
+  right: 10px;
+  background-color: #ffffff;
+  padding: 0 6px;
+}
+.stripe-container .sub-container .title div {
+  display: inline-block;
+}
+.stripe-container .sub-container .title button {
+  margin: 2px 0 0 6px;
+  height: 18px;
+  padding: 1px 6px;
+  font-size: 12px;
+}
+.stripe-container .sub-container .buttons {
+  padding: 2px;
+  margin: 4px;
+  background-color: rgba(100, 100, 100, 0.1);
+  text-align: right;
+}
+.stripe-container .sub-container .buttons div {
+  display: inline-block;
+}
+.stripe-container .sub-container .top-controls {
+  margin: 5px 3px;
+  padding: 0;
+  text-align: right;
+  position: relative;
+}
+.stripe-container .sub-container .top-controls .update {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  margin: 0;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  background-image: url('/lib/rightArrow.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position-y: 1px;
+}
